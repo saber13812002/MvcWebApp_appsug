@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace MvcWebApp_appsug
+namespace MvcApp_appsuggestor
 {
     public static class WebApiConfig
     {
@@ -11,14 +11,8 @@ namespace MvcWebApp_appsug
         {
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "esl/{controller}/{Id}/{Id2}",
-                defaults: new { Id = RouteParameter.Optional ,Id2 = RouteParameter.Optional}
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApiesl",
-                routeTemplate: "esl/{controller}/{Id}/{Id2}/{Id3}",
-                defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional, Id3 = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
             );
 
 
