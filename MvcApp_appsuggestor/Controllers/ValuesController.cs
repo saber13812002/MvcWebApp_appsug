@@ -11,24 +11,27 @@ using System.Web.Http;
 
 namespace MvcWebApp_appsug.Controllers
 {
+    public class application
+    {
+        public string rate  { get; set; }
+        public string name  { get; set; }
+        public string ver  { get; set; }
+        public string lastupdate  { get; set; }
+        public string download   { get; set; }
+        public string size  { get; set; }
+        public string price  { get; set; }
+        public string creator  { get; set; }
+        public string describtion { get; set; }
+        public string similarapp { get; set; }
+    }
+
+
     public class AppdetailController : ApiController
     {
-
-        string rate = "";
-        string name = "";
-        string ver = "";
-        string lastupdate = "";
-        string download = "";
-        string size = "";
-        string price = "";
-        string creator = "";
-        string describtion = "";
-        string similarapp = "";
-
-
+        application app = new application();
 
         // GET api/values
-        public IEnumerable<string> Get(string id, int id2)
+        public application Get(string id, int id2)
         {
             if (id != "")
                 if (id2 == 1)
@@ -40,7 +43,7 @@ namespace MvcWebApp_appsug.Controllers
         }
 
 
-        private IEnumerable<string> Packagename2OtherAttributes(string AppId, string sp_name, string parameter)
+        private application Packagename2OtherAttributes(string AppId, string sp_name, string parameter)
         {
             SqlConnection conn = null;
             SqlDataReader rdr = null;
@@ -81,18 +84,21 @@ namespace MvcWebApp_appsug.Controllers
             {
                 //Console.WriteLine(
                 //    "Product: {0,-35} Total: {1,2}",
-                rate = rdr["rate"].ToString();
-                name = rdr["name"].ToString();
-                ver = rdr["ver"].ToString();
-                lastupdate = rdr["lastupdatedatepersian"].ToString();
-                download = rdr["download"].ToString();
-                size = rdr["size"].ToString();
-                price = rdr["price"].ToString();
-                creator = rdr["creator"].ToString();
-                describtion = rdr["describtion"].ToString();
-                similarapp = rdr["similarapp"].ToString();
+
+                //app.app.rate=
+                app.rate = rdr["rate"].ToString();
+                app.name = rdr["name"].ToString();
+                app.ver = rdr["ver"].ToString();
+                app.lastupdate = rdr["lastupdatedatepersian"].ToString();
+                app.download = rdr["download"].ToString();
+                app.size = rdr["size"].ToString();
+                app.price = rdr["price"].ToString();
+                app.creator = rdr["creator"].ToString();
+                app.describtion = rdr["describtion"].ToString();
+                app.similarapp = rdr["similarapp"].ToString();
             }
-            return new string[] { rate, name, ver, lastupdate, download, size, price, creator, describtion, similarapp };
+//            return new string[] { rate, name, ver, lastupdate, download, size, price, creator, describtion, similarapp };
+            return app;
         }
 
 
@@ -130,23 +136,22 @@ namespace MvcWebApp_appsug.Controllers
     public class SetUserIDbyDeviceIDController : ApiController
     {
 
-        string userid = "";
-        string deviceid = "";
+        userdevice userdev = new userdevice();
 
 
 
         // GET esl/values
-        public IEnumerable<string> Get(string id, string id2,string id3)
+        public userdevice Get(string id, string id2,string id3)
         {
             if (id != "" & id2 != "" & id3 != "")
                     return esl_set_userid_by_deviceid(id,id2,id3, "esl_set_userid_by_deviceid", "@esl_user_id","@esl_device_id","@esl_mobile_number");
             else
-                 return new string[] { userid, deviceid };
+                 return userdev;
             //    return Packagename2OtherAttributes("=com.glu.ewarriors2", "app_by_full_package_name", "@app_full_packagename");
         }
 
 
-        private IEnumerable<string> esl_set_userid_by_deviceid(string UserId, string DeviceId,string mobilenumber, string sp_name, string esl_user_id, string esl_device_id,string esl_mobile_number)
+        private userdevice esl_set_userid_by_deviceid(string UserId, string DeviceId,string mobilenumber, string sp_name, string esl_user_id, string esl_device_id,string esl_mobile_number)
         {
             SqlConnection conn = null;
             SqlDataReader rdr = null;
@@ -189,12 +194,13 @@ namespace MvcWebApp_appsug.Controllers
                             // execute the command
             rdr = cmd.ExecuteReader();
 
-            return new string[] { UserId, DeviceId , mobilenumber };
+            return userdev;
             }
             catch (Exception e_esl_register_deviceid_by_userid)
             {
-                
-            return new string[] { userid, "error "+e_esl_register_deviceid_by_userid.Message.ToString() };
+                userdev.error = "error " + e_esl_register_deviceid_by_userid.Message.ToString();
+
+            return userdev;
 
                 throw;
             }
@@ -232,28 +238,35 @@ namespace MvcWebApp_appsug.Controllers
         }
     }
 
+    public class userdevice {
+        public string userid { get; set; }
+        public string deviceid { get; set; }
+        public string mobilenumber { get; set; }
+        public string modifydatetime { get; set; }
+        public string error { get; set; }
+    }
 
     public class getmobilenumberbyUseridDeviceIDController : ApiController
     {
+            userdevice userdev = new userdevice( );
 
-        string userid = "";
-        string deviceid = "";
-        string mobilenumber = "";
-        string modifydatetime = "";
+        
+
 
 
         // GET esl/values
-        public IEnumerable<string> Get(string id, string id2)
+        public userdevice Get(string id, string id2)
         {
+
             if (id != "" & id2 != "")
                 return esl_get_last_userid_by_deviceid(id, id2, "esl_get_last_userid_by_deviceid", "@esl_user_id", "@esl_device_id");
             else
-                return new string[] { userid, deviceid };
+                return userdev;
             //    return Packagename2OtherAttributes("=com.glu.ewarriors2", "app_by_full_package_name", "@app_full_packagename");
         }
 
 
-        private IEnumerable<string> esl_get_last_userid_by_deviceid(string UserId, string DeviceId, string sp_name, string esl_user_id, string esl_device_id)
+        private userdevice esl_get_last_userid_by_deviceid(string UserId, string DeviceId, string sp_name, string esl_user_id, string esl_device_id)
         {
             SqlConnection conn = null;
             SqlDataReader rdr = null;
@@ -296,15 +309,15 @@ namespace MvcWebApp_appsug.Controllers
                 if (rdr.Read()) 
                 {
 
-                    mobilenumber = rdr["mobilenumber"].ToString();
-                    modifydatetime = rdr["modifyDateTime"].ToString();
+                    userdev.mobilenumber = rdr["mobilenumber"].ToString();
+                    userdev.modifydatetime = rdr["modifyDateTime"].ToString();
                 }
-                return new string[] { UserId, DeviceId, mobilenumber, modifydatetime };
+                return userdev ;
             }
             catch (Exception e_esl_get_mobilenumber_deviceid_by_userid)
             {
-
-                return new string[] { userid, "error " + e_esl_get_mobilenumber_deviceid_by_userid.Message.ToString() };
+                userdev.error = "error"+ e_esl_get_mobilenumber_deviceid_by_userid.ToString();
+                return userdev ;
 
                 throw;
             }
