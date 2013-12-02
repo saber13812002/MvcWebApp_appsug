@@ -359,28 +359,250 @@ namespace MvcWebApp_appsug.Controllers
 
     }
 
-
-
-    public class Employee
+    public class getprojController:ApiController
     {
-        public string Name { get; set; }
-        public Department Department { get; set; }
-    }
+        Report report = new Report();
 
-    public class Department
-    {
-        public string Name { get; set; }
-        public Employee Manager { get; set; }
-    }
+        
 
-    public class DepartmentsController : ApiController
-    {
-        public Department Get(int id)
+        // GET esl/getproj/1
+        public Report Get(string id)
         {
-            Department sales = new Department() { Name = "Sales" };
-            Employee alice = new Employee() { Name = "Alice", Department = sales };
-            sales.Manager = alice;
-            return sales;
+
+            if (id != "" )
+                return irib_get_report_by_projs_and_id(id, "irib_get_report_by_projs_and_id", "@irib_proj_id");
+            else
+                return report;
+            //    return Packagename2OtherAttributes("=com.glu.ewarriors2", "app_by_full_package_name", "@app_full_packagename");
+        }
+
+
+        private Report irib_get_report_by_projs_and_id(string projId, string sp_name, string irib_proj_id)
+        {
+            SqlConnection conn = null;
+            SqlDataReader rdr = null;
+
+            // typically obtained from user
+            // input, but we take a short cut
+
+            //conn = new SqlConnection("Server=pc5\\sqlexpress;DataBase=appsugg_db; Integrated Security=SSPI");
+            //Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\AddressBook.mdf;Integrated Security=True;User Instance=True
+            //کانکشن به سرور خوش گفتار
+            //conn = new SqlConnection("Data Source=khoshgoftar-pc\\reza;initial catalog=MvcWebApp_appsug_db; user id=saber;password=1234567aA");
+            conn = new SqlConnection("Data Source=81.17.18.82\\SQLEXPRESS;initial catalog=asanhost_learnkey; user id=learnkeyusr;password=63Vg*)k73D");
+            //conn = new SqlConnection("Data Source=.\\SQL;Initial Catalog=app_sugg_db;user id=sa;password=1234567aA");
+
+            //                conn = new SqlConnection("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\MvcWebApp_appsug_db.mdf;User Instance=True");
+            //conn.Open();
+            conn.Open();
+
+            // 1.  create a command object identifying
+            //     the stored procedure
+            SqlCommand cmd = new SqlCommand(
+                sp_name, conn);
+
+            // 2. set the command object so it knows
+            //    to execute a stored procedure
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // 3. add parameter to command, which
+            //    will be passed to the stored procedure
+            cmd.Parameters.Add(
+                new SqlParameter(irib_proj_id, projId));
+
+            //cmd.Parameters.Add(
+            //    new SqlParameter(esl_device_id, DeviceId));
+            try
+            {
+                // execute the command
+                rdr = cmd.ExecuteReader();
+
+                if (rdr.Read()) 
+                {
+
+                    report.name = rdr["name"].ToString();
+                    report.desc = rdr["desc"].ToString();
+                }
+                return report ;
+            }
+            catch (Exception e_esl_get_mobilenumber_deviceid_by_userid)
+            {
+                report.error = "error"+ e_esl_get_mobilenumber_deviceid_by_userid.ToString();
+                return report ;
+
+                throw;
+            }
+
+        }
+
+
+
+        // GET esl/values
+        public IEnumerable<string> Get()
+        {
+            Database.DefaultConnectionFactory = new SqlConnectionFactory("Data Source=biztalk\\SQLEXPRESS;Initial Catalog=appsugg_db;Integrated Security=True; MultipleActiveResultSets=True");
+            //MvcWebApp_appsug.Models.AppDBContext();
+            return new string[] { "value1", "value2" };
+        }
+
+        // GET esl/values/5
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        // POST esl/values
+        public void Post([FromBody]string value)
+        {
+        }
+
+        // PUT esl/values/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE esl/values/5
+        public void Delete(int id)
+        {
+        }
+
+    }
+
+    public class setNewProjController : ApiController
+    {
+
+        //userdevice userdev = new userdevice();
+        Report proj = new Report();
+
+
+
+        // GET http://localhost:3299/esl/setNewProj/androidapps/thisprojectwillpublishedsoonasp/13920905
+        public Report Get(string id, string id2,string id3)
+        {
+            if (id != "" & id2 != "" & id3 != "")
+                return irib_set_new_proj(id, id2, id3, "irib_set_new_proj", "@irib_proj_name", "@irib_proj_desc", "@irib_proj_date");
+            else
+                 return proj;
+            //    return Packagename2OtherAttributes("=com.glu.ewarriors2", "app_by_full_package_name", "@app_full_packagename");
+        }
+
+
+        private Report irib_set_new_proj(string proj_name, string proj_desc,string proj_created_date, string sp_name, string irib_proj_name, string irib_proj_desc,string irib_proj_date)
+        {
+            SqlConnection conn = null;
+            SqlDataReader rdr = null;
+
+            // typically obtained from user
+            // input, but we take a short cut
+
+            //conn = new SqlConnection("Server=pc5\\sqlexpress;DataBase=appsugg_db; Integrated Security=SSPI");
+            //Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\AddressBook.mdf;Integrated Security=True;User Instance=True
+            //کانکشن به سرور خوش گفتار
+            //conn = new SqlConnection("Data Source=khoshgoftar-pc\\reza;initial catalog=MvcWebApp_appsug_db; user id=saber;password=1234567aA");
+            conn = new SqlConnection("Data Source=81.17.18.82\\SQLEXPRESS;initial catalog=asanhost_learnkey; user id=learnkeyusr;password=63Vg*)k73D");
+            //conn = new SqlConnection("Data Source=.\\SQL;Initial Catalog=app_sugg_db;user id=sa;password=1234567aA");
+
+            //                conn = new SqlConnection("Data Source=.\\SQLEXPRESS;AttachDbFilename=|DataDirectory|\\MvcWebApp_appsug_db.mdf;User Instance=True");
+            //conn.Open();
+            conn.Open();
+
+            // 1.  create a command object identifying
+            //     the stored procedure
+            SqlCommand cmd = new SqlCommand(
+                sp_name, conn);
+
+            // 2. set the command object so it knows
+            //    to execute a stored procedure
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // 3. add parameter to command, which
+            //    will be passed to the stored procedure
+            cmd.Parameters.Add(
+                new SqlParameter(irib_proj_name, proj_name));
+
+            cmd.Parameters.Add(
+                new SqlParameter(irib_proj_desc, proj_desc));
+
+            cmd.Parameters.Add(
+                new SqlParameter(irib_proj_date, proj_created_date));
+            try
+            {
+                            // execute the command
+            rdr = cmd.ExecuteReader();
+
+            return proj;
+            }
+            catch (Exception e_irib_register_proj_error)
+            {
+                proj.error = "error " + e_irib_register_proj_error.Message.ToString();
+
+            return proj;
+
+                throw;
+            }
+
+        }
+
+
+        // GET esl/values
+        public IEnumerable<string> Get()
+        {
+            Database.DefaultConnectionFactory = new SqlConnectionFactory("Data Source=biztalk\\SQLEXPRESS;Initial Catalog=appsugg_db;Integrated Security=True; MultipleActiveResultSets=True");
+            //MvcWebApp_appsug.Models.AppDBContext();
+            return new string[] { "value1", "value2" };
+        }
+
+        // GET esl/values/5
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        // POST esl/values
+        public void Post([FromBody]string value)
+        {
+        }
+
+        // PUT esl/values/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE esl/values/5
+        public void Delete(int id)
+        {
         }
     }
+
+
+    public class Report 
+    {
+        public string name { get; set; }
+        public string desc { get; set; }
+        public string error { get; set; }
+    }
+
+
+    //public class Employee
+    //{
+    //    public string Name { get; set; }
+    //    public Department Department { get; set; }
+    //}
+
+    //public class Department
+    //{
+    //    public string Name { get; set; }
+    //    public Employee Manager { get; set; }
+    //}
+
+    //public class DepartmentsController : ApiController
+    //{
+    //    public Department Get(int id)
+    //    {
+    //        Department sales = new Department() { Name = "Sales" };
+    //        Employee alice = new Employee() { Name = "Alice", Department = sales };
+    //        sales.Manager = alice;
+    //        return sales;
+    //    }
+    //}
 }

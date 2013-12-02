@@ -21,6 +21,30 @@ namespace MvcWebApp_appsug
                 defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional, Id3 = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiquran",
+                routeTemplate: "quran/{controller}/{Id}/{Id2}",
+                defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiquran2",
+                routeTemplate: "quran/{controller}/{Id}/{Id2}/{Id3}",
+                defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional, Id3 = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiIRIB",
+                routeTemplate: "irib/{controller}/{Id}/{Id2}",
+                defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiIRIB",
+                routeTemplate: "irib/{controller}/{Id}/{Id2}/{Id3}",
+                defaults: new { Id = RouteParameter.Optional, Id2 = RouteParameter.Optional, Id3 = RouteParameter.Optional }
+            );
+
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
